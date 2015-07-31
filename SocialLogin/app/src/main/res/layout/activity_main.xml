@@ -11,11 +11,9 @@
         android:background="@color/color_primary"
         android:minHeight="?attr/actionBarSize" />
 
-
     <FrameLayout
         android:layout_below="@+id/main_toolbar"
         android:id="@+id/frame_container"
         android:layout_width="match_parent"
-
         android:layout_height="match_parent" />
 </RelativeLayout>

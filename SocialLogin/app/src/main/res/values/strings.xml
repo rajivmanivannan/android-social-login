@@ -3,4 +3,7 @@
 
     <string name="title_facebook_fragment">Facebook</string>
     <string name="title_google_fragment">Google+</string>
+    <string name="welcome_user">Welcome! </string>
+
+
 </resources>

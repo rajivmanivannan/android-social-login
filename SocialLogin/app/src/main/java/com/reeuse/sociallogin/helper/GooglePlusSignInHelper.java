@@ -13,7 +13,9 @@ import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 
 /**
- * GPlusSignIn.java
+ * GooglePlusSignInHelper.java
+ * This is helper class to use for google+ sign in.
+ * For Error code refer : https://developers.google.com/android/reference/com/google/android/gms/common/ConnectionResult
  */
 public class GooglePlusSignInHelper implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     private static final String TAG = GooglePlusSignInHelper.class.getSimpleName();
@@ -67,7 +69,6 @@ public class GooglePlusSignInHelper implements GoogleApiClient.ConnectionCallbac
     public GooglePlusSignInHelper(Activity mActivity,OnGoogleSignInListener mOnGoogleSignInListener){
         this.mActivity = mActivity;
         mGoogleApiClient = buildGoogleApiClient();
-        revokeAccess();
         this.mOnGoogleSignInListener = mOnGoogleSignInListener;
     }
 
@@ -156,10 +157,9 @@ public class GooglePlusSignInHelper implements GoogleApiClient.ConnectionCallbac
     */
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-        Log.w(TAG, "Google Play service : " + connectionResult.getErrorCode());
-        if (connectionResult.getErrorCode() == ConnectionResult.API_UNAVAILABLE) {
-            Log.w(TAG, "Google Play service API unavailable.");
-            mOnGoogleSignInListener.OnError("Google play service unavailable.");
+         Log.w(TAG,"Error code::"+connectionResult.getErrorCode());
+       if (connectionResult.getErrorCode() == ConnectionResult.API_UNAVAILABLE) {
+            mOnGoogleSignInListener.OnError("Google play service unavailable");
         } else if (mSignInProgress != STATE_IN_PROGRESS) {
             // We do not have an intent in progress so we should store the latest
             // error resolution intent for use when the sign in button is clicked.
@@ -207,7 +207,7 @@ public class GooglePlusSignInHelper implements GoogleApiClient.ConnectionCallbac
             // error types, so we show the default Google Play services error
             // dialog which may still start an intent on our behalf if the
             // user can resolve the issue.
-            mOnGoogleSignInListener.OnError("Unknown error.");
+            mOnGoogleSignInListener.OnError("Unknown error occurred");
         }
     }
 
@@ -234,11 +234,4 @@ public class GooglePlusSignInHelper implements GoogleApiClient.ConnectionCallbac
         }
     }
 
-    @Override
-    protected void finalize() throws Throwable {
-        super.finalize();
-        if (mGoogleApiClient.isConnected()&&mGoogleApiClient!=null) {
-            mGoogleApiClient.disconnect();
-        }
-    }
 }

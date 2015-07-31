@@ -1,5 +1,6 @@
 package com.reeuse.sociallogin;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
@@ -83,4 +84,10 @@ public class MainActivity extends AppCompatActivity {
                 super.onBackPressed();
             }
         }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }

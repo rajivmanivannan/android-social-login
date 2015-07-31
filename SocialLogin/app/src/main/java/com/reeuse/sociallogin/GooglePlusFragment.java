@@ -35,6 +35,7 @@ public class GooglePlusFragment extends Fragment  implements GooglePlusSignInHel
     //Google plus sign-in button
     private SignInButton mSignInButton;
     private GooglePlusSignInHelper mSignInHelper;
+
     public GooglePlusFragment() {
         // Required empty public constructor
     }
@@ -85,19 +86,17 @@ public class GooglePlusFragment extends Fragment  implements GooglePlusSignInHel
 
     @Override
     public void OnSuccess(Person mPerson) {
-        ownerName.setText(mPerson.getDisplayName());
-        Log.i(TAG,mPerson.getDisplayName());
+        ownerName.setText(getString(R.string.welcome_user)+mPerson.getDisplayName());
+
     }
 
     @Override
     public void OnError(String errorMessage) {
-        Log.i(TAG,errorMessage);
+          Log.e(TAG,errorMessage);
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        mSignInHelper.onActivityResult(requestCode,resultCode,data);
+          mSignInHelper.onActivityResult(requestCode, resultCode, data);
     }
 }
