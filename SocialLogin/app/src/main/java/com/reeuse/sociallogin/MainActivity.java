@@ -1,93 +1,151 @@
 package com.reeuse.sociallogin;
 
 import android.content.Intent;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
+import com.facebook.FacebookSdk;
+import com.facebook.GraphResponse;
+import com.google.android.gms.plus.PlusOneButton;
+import com.google.android.gms.plus.model.people.Person;
+import com.reeuse.sociallogin.helper.FbConnectHelper;
+import com.reeuse.sociallogin.helper.GooglePlusSignInHelper;
+import com.reeuse.sociallogin.utils.KeyHashGenerator;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements FbConnectHelper.OnFbSignInListener, GooglePlusSignInHelper.OnGoogleSignInListener {
+    private static final String TAG = MainActivity.class.getSimpleName();
+    //--------------------------------Facebook login--------------------------------------//
+    private FbConnectHelper fbConnectHelper;
+    private Button fbSignInButton;
+    private Button fbShareButton;
+    private TextView fbName;
+    private TextView fbEmail;
+    //--------------------------------Google One Plus--------------------------------------//
+    // The URL to +1.  Must be a valid URL.
+    private final String PLUS_ONE_URL = "https://github.com/RajivManivannan/Android-Social-Login";
+    // The request code must be 0 or greater.
+    private static final int PLUS_ONE_REQUEST_CODE = 0;
+    //Google 1+ button
+    private PlusOneButton mPlusOneButton;
+    //----------------------------------Google +Sign in-----------------------------------//
+    //Google plus sign-in button
+    private GooglePlusSignInHelper gSignInHelper;
+    private Button gSignInButton;
+    private TextView gplusName;
+    private TextView gplusEmail;
 
-    private static final int FACEBOOK_FRAGMENT = 0;
-    private static final int GOOGLE_PLUS_FRAGMENT = 1;
+    private ProgressBar progressBar;
+    private boolean isFbLogin = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext()); // Facebook SDK Initialization
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        setSupportActionBar(toolbar);
-    }
+        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
+        //--------------------------------Facebook login--------------------------------------//
+        KeyHashGenerator.generateKey(this);
+        fbConnectHelper = new FbConnectHelper(this,this);
+
+        fbName = (TextView) findViewById(R.id.main_fb_name_txt);
+        fbEmail = (TextView) findViewById(R.id.main_fb_email_txt);
+        fbSignInButton = (Button) findViewById(R.id.fb_sign_in_button);
+        fbSignInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                progressBar.setVisibility(View.VISIBLE);
+                fbConnectHelper.connect();
+                isFbLogin = true;
+            }
+        });
+
+        fbShareButton = (Button) findViewById(R.id.main_fb_share_button);
+        fbShareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FbConnectHelper fbConnectHelper = new FbConnectHelper(MainActivity.this);
+                fbConnectHelper.shareOnFBWall("Social Login","Android Facebook and Google+ Login",PLUS_ONE_URL);
+            }
+        });
+
+        //----------------------------------Google +Sign in-----------------------------------//
+        gSignInHelper = new GooglePlusSignInHelper(this, this);
+
+        gplusName = (TextView) findViewById(R.id.main_g_name_txt);
+        gplusEmail = (TextView) findViewById(R.id.main_g_email_txt);
+        gSignInButton = (Button) findViewById(R.id.main_g_sign_in_button);
+        gSignInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                progressBar.setVisibility(View.VISIBLE);
+                gSignInHelper.connect();
+                isFbLogin = false;
+            }
+        });
+        //----------------------------------For  the +1 button-----------------------------------//
+        mPlusOneButton = (PlusOneButton) findViewById(R.id.plus_one_button);
+    }
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+    public void onResume() {
+        super.onResume();
+        // Refresh the state of the +1 button each time the activity receives focus.
+        mPlusOneButton.initialize(PLUS_ONE_URL, PLUS_ONE_REQUEST_CODE);
     }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        /**
-         * Displaying fragment view for selected navigation drawer list item
-         */
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        if (id == R.id.action_facebook){
-            displayView(FACEBOOK_FRAGMENT);
-            return true;
-        }else if (id == R.id.action_google_plus){
-            displayView(GOOGLE_PLUS_FRAGMENT);
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-
-    }
-        private void displayView(int position) {
-            // update the main content by replacing fragments
-            Fragment fragment = null;
-            String fragmentName = null;
-            switch (position) {
-                case FACEBOOK_FRAGMENT:
-                    fragment = new FacebookFragment();
-                    fragmentName = FacebookFragment.class.getSimpleName();
-                    break;
-                case GOOGLE_PLUS_FRAGMENT:
-                    fragment = new GooglePlusFragment();
-                    fragmentName = GooglePlusFragment.class.getSimpleName();
-                    break;
-                default:
-                    break;
-            }
-            if (fragment != null) {
-                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.frame_container, fragment);
-                fragmentTransaction.addToBackStack(fragmentName);
-                fragmentTransaction.commit();
-            }
-        }
-
-
-        @Override
-        public void onBackPressed() {
-            if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-                getSupportFragmentManager().popBackStack();
-            } else {
-                super.onBackPressed();
-            }
-        }
 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        gSignInHelper.onActivityResult(requestCode, resultCode, data);
+        fbConnectHelper.onActivityResult(requestCode, resultCode, data);
+        if(isFbLogin) {
+            progressBar.setVisibility(View.VISIBLE);
+            isFbLogin = false;
+        }
+    }
+
+    @Override
+    public void OnFbSuccess(GraphResponse graphResponse) {
+        progressBar.setVisibility(View.GONE);
+        try {
+            JSONObject jsonObject = graphResponse.getJSONObject();
+            fbName.setText(jsonObject.getString("name"));
+            fbEmail.setText(jsonObject.getString("email"));
+            String id = jsonObject.getString("id");
+            String profileImg = "http://graph.facebook.com/"+ id+ "/picture?type=large";
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public void OnFbError(String errorMessage) {
+        progressBar.setVisibility(View.GONE);
+        Log.e(TAG, errorMessage);
+    }
+
+
+    @Override
+    public void OnGSignSuccess(Person mPerson,String emailAddress) {
+        progressBar.setVisibility(View.GONE);
+        gplusName.setText(mPerson.getDisplayName());
+        gplusEmail.setText(emailAddress);
+    }
+
+    @Override
+    public void OnGSignError(String errorMessage) {
+        progressBar.setVisibility(View.GONE);
     }
 }

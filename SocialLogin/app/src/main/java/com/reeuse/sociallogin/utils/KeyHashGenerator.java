@@ -1,11 +1,3 @@
-/**
- * @category Contus
- * @package com.reeuse.sociallogin.helper
- * @version 1.0
- * @author Contus Team <developers@contus.in>
- * @copyright Copyright (C) 2015 Contus. All rights reserved.
- * @license http://www.apache.org/licenses/LICENSE-2.0
- */
 package com.reeuse.sociallogin.utils;
 
 import android.app.Activity;
@@ -21,8 +13,6 @@ import java.security.NoSuchAlgorithmException;
 
 /**
  * KeyHashGenerator.java
- *
- * Description: 
  */
 public class KeyHashGenerator {
 
@@ -42,13 +32,12 @@ public class KeyHashGenerator {
             //Retrieving package info
             packageInfo = activity.getPackageManager().getPackageInfo(packageName,
                     PackageManager.GET_SIGNATURES);
-            Log.e("Package Name=", activity.getApplicationContext().getPackageName());
+            Log.i("Package Name= ", activity.getApplicationContext().getPackageName());
             for (Signature signature : packageInfo.signatures) {
                 MessageDigest md = MessageDigest.getInstance("SHA");
                 md.update(signature.toByteArray());
                 key = new String(Base64.encode(md.digest(), 0));
-                // String key = new String(Base64.encodeBytes(md.digest()));
-                Log.e("Key Hash=", key);
+                Log.i("Key Hash= ", key);
             }
         } catch (PackageManager.NameNotFoundException e1) {
             Log.e("Name not found", e1.toString());

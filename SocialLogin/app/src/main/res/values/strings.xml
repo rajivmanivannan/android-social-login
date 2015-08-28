@@ -3,7 +3,10 @@
 
     <string name="title_facebook_fragment">Facebook</string>
     <string name="title_google_fragment">Google+</string>
-    <string name="welcome_user">Welcome! </string>
+    <string name="sign_in_with_google">Sign in with Google</string>
+    <string name="sign_in_with_fb">Sign in with Facebook</string>
+    <string name="share_fb">Facebook Share</string>
+    <string name="facebook_app_id">596028327096505</string>
 
 
 </resources>
