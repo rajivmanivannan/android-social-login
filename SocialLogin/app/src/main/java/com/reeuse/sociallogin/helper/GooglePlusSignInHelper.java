@@ -1,12 +1,17 @@
 package com.reeuse.sociallogin.helper;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.PendingIntent;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
@@ -129,6 +134,7 @@ public class GooglePlusSignInHelper implements GoogleApiClient.ConnectionCallbac
                 .addOnConnectionFailedListener(this)
                 .addApi(Plus.API, Plus.PlusOptions.builder().build())
                 .addScope(Plus.SCOPE_PLUS_LOGIN);
+
         return builder.build();
     }
 
@@ -203,10 +209,33 @@ public class GooglePlusSignInHelper implements GoogleApiClient.ConnectionCallbac
             // error types, so we show the default Google Play services error
             // dialog which may still start an intent on our behalf if the
             // user can resolve the issue.
-            mOnGoogleSignInListener.OnGSignError("Unknown error occurred");
+            createErrorDialog();
         }
     }
-
+    private Dialog createErrorDialog() {
+        if (GooglePlayServicesUtil.isUserRecoverableError(mSignInError)) {
+            return GooglePlayServicesUtil.getErrorDialog(
+                    mSignInError,
+                    mActivity,
+                    RC_SIGN_IN,
+                    new DialogInterface.OnCancelListener() {
+                        @Override
+                        public void onCancel(DialogInterface dialog) {
+                            mSignInProgress = STATE_DEFAULT;
+                        }
+                    });
+        } else {
+            return new AlertDialog.Builder(mActivity)
+                    .setMessage("Google Play services is not available.")
+                    .setPositiveButton("Close",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    mSignInProgress = STATE_DEFAULT;
+                                }
+                            }).create();
+        }
+    }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
