@@ -3,12 +3,10 @@ package com.reeuse.sociallogin.helper;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
-import com.facebook.FacebookAuthorizationException;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
@@ -86,11 +84,6 @@ public class FbConnectHelper {
 
                     @Override
                     public void onError(FacebookException exception) {
-                        if (exception instanceof FacebookAuthorizationException) {
-                            if (AccessToken.getCurrentAccessToken() != null) {
-                                LoginManager.getInstance().logOut();
-                            }
-                        }
                         fbSignInListener.OnFbError(exception.getMessage());
                     }
                 });
@@ -106,10 +99,6 @@ public class FbConnectHelper {
                         fbSignInListener.OnFbSuccess(response);
                     }
                 });
-        Bundle parameters = new Bundle();
-        //Explicitly we need to specify the fields to get values else some values will be null.
-        parameters.putString("fields", "id,birthday,email,first_name,gender,last_name,link,location,name");
-        request.setParameters(parameters);
         request.executeAsync();
     }
 

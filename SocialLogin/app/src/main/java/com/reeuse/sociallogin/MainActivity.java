@@ -124,7 +124,6 @@ public class MainActivity extends AppCompatActivity implements FbConnectHelper.O
             fbEmail.setText(jsonObject.getString("email"));
             String id = jsonObject.getString("id");
             String profileImg = "http://graph.facebook.com/"+ id+ "/picture?type=large";
-            Log.i(TAG,profileImg);
         } catch (JSONException e) {
             e.printStackTrace();
         }
