@@ -17,11 +17,11 @@ import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 
 /**
- * GooglePlusSignInHelper.java
+ * GooglePlusHelper.java
  * This is helper class to use for google+ sign in.
  * For Error code refer : https://developers.google.com/android/reference/com/google/android/gms/common/ConnectionResult
  */
-public class GooglePlusSignInHelper implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class GooglePlusHelper implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     private static final int STATE_DEFAULT = 0;
     private static final int STATE_SIGN_IN = 1;
     private static final int STATE_IN_PROGRESS = 2;
@@ -64,12 +64,10 @@ public class GooglePlusSignInHelper implements GoogleApiClient.ConnectionCallbac
      * Interface to listen the Google+ sign in
      */
     public interface OnGoogleSignInListener {
-        void OnGSignSuccess(Person mPerson, String emailAddress);
-
-        void OnGSignError(String errorMessage);
+        void OnGSignInComplete(Person mPerson, String emailAddress,String error);
     }
 
-    public GooglePlusSignInHelper(Activity mActivity, OnGoogleSignInListener mOnGoogleSignInListener) {
+    public GooglePlusHelper(Activity mActivity, OnGoogleSignInListener mOnGoogleSignInListener) {
         this.mActivity = mActivity;
         mGoogleApiClient = buildGoogleApiClient();
         this.mOnGoogleSignInListener = mOnGoogleSignInListener;
@@ -143,7 +141,7 @@ public class GooglePlusSignInHelper implements GoogleApiClient.ConnectionCallbac
         // Retrieve some profile information to personalize our app for the user.
         Person currentUser = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
         String emailAddress = Plus.AccountApi.getAccountName(mGoogleApiClient);
-        mOnGoogleSignInListener.OnGSignSuccess(currentUser, emailAddress);
+        mOnGoogleSignInListener.OnGSignInComplete(currentUser, emailAddress, null);
         // Indicate that the sign in process is complete.
         mSignInProgress = STATE_DEFAULT;
     }
@@ -163,7 +161,7 @@ public class GooglePlusSignInHelper implements GoogleApiClient.ConnectionCallbac
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
         if (connectionResult.getErrorCode() == ConnectionResult.API_UNAVAILABLE) {
-            mOnGoogleSignInListener.OnGSignError("Google play service unavailable");
+            mOnGoogleSignInListener.OnGSignInComplete(null, null, "Google play service unavailable");
         } else if (mSignInProgress != STATE_IN_PROGRESS) {
             // We do not have an intent in progress so we should store the latest
             // error resolution intent for use when the sign in button is clicked.
@@ -248,6 +246,7 @@ public class GooglePlusSignInHelper implements GoogleApiClient.ConnectionCallbac
                     // If the error resolution was not successful or the user canceled,
                     // we should stop processing errors.
                     mSignInProgress = STATE_DEFAULT;
+                    mOnGoogleSignInListener.OnGSignInComplete(null,null,"User Cancelled Request");
                 }
 
                 if (!mGoogleApiClient.isConnecting()) {

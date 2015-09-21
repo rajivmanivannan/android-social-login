@@ -20,10 +20,10 @@
             </intent-filter>
         </activity>
 
+        <!--For Google Plus Sign in-->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
 
         <!-- For Facebook Login -->
         <meta-data
@@ -38,7 +38,13 @@
         <!-- For Facebook Share -->
         <provider
             android:name="com.facebook.FacebookContentProvider"
-            android:authorities="com.facebook.app.FacebookContentProvider596028327096505"
+            android:authorities="com.facebook.app.FacebookContentProvider596028327096xxxx"
             android:exported="true" />
+        <!-- For Twitter Sign in-->
+
+        <!--For Twitter Fabric SDK-->
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="9952b4224ffea1b363591a8a4e77b91fdeb1xxxx" />
     </application>
 </manifest>

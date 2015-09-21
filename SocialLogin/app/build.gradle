@@ -1,13 +1,30 @@
 apply plugin: 'com.android.application'
 
+/* For Twitter Fabric SDK */
+apply plugin: 'io.fabric'
+buildscript {
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+    }
+
+    dependencies {
+        classpath 'io.fabric.tools:gradle:1.+'
+    }
+}
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
+/* End of Twitter Fabric SDK */
+
 android {
-    compileSdkVersion 22
+    compileSdkVersion 23
     buildToolsVersion "22.0.1"
 
     defaultConfig {
         applicationId "com.reeuse.sociallogin"
         minSdkVersion 10
-        targetSdkVersion 22
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
     }
@@ -24,8 +41,14 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:22.2.0'
+    compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.android.support:support-v4:23.0.1'
+    /*For Google Plus Sign in */
     compile 'com.google.android.gms:play-services:7.8.0'
+    /*For Facebook Sign in*/
     compile 'com.facebook.android:facebook-android-sdk:4.0.1'
+    /* For twitter login*/
+    compile('com.twitter.sdk.android:twitter:1.8.0@aar') {
+        transitive = true;
+    }
 }

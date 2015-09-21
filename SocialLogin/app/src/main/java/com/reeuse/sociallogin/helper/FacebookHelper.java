@@ -24,9 +24,9 @@ import java.util.Arrays;
 import java.util.Collection;
 
 /**
- * FbConnectHelper.java
+ * FacebookHelper.java
  */
-public class FbConnectHelper {
+public class FacebookHelper {
     private Collection<String> permissions = Arrays.asList("public_profile ", "email", "user_birthday", "user_location");
     private CallbackManager callbackManager;
     private LoginManager loginManager;
@@ -36,29 +36,27 @@ public class FbConnectHelper {
     private OnFbSignInListener fbSignInListener;
 
     /**
-     * Interface to listen the Facebook connect
+     * Interface to listen the Facebook login
      */
     public interface OnFbSignInListener {
-        void OnFbSuccess(GraphResponse graphResponse);
-
-        void OnFbError(String errorMessage);
+        void OnFbSignInComplete(GraphResponse graphResponse,String error);
     }
 
-    public FbConnectHelper(Activity activity, OnFbSignInListener fbSignInListener) {
+    public FacebookHelper(Activity activity, OnFbSignInListener fbSignInListener) {
         this.activity = activity;
         this.fbSignInListener = fbSignInListener;
     }
 
-    public FbConnectHelper(Fragment fragment, OnFbSignInListener fbSignInListener) {
+    public FacebookHelper(Fragment fragment, OnFbSignInListener fbSignInListener) {
         this.fragment = fragment;
         this.fbSignInListener = fbSignInListener;
     }
 
-    public FbConnectHelper(Activity activity) {
+    public FacebookHelper(Activity activity) {
         shareDialog = new ShareDialog(activity);
     }
 
-    public FbConnectHelper(Fragment fragment) {
+    public FacebookHelper(Fragment fragment) {
         shareDialog = new ShareDialog(fragment);
     }
 
@@ -81,7 +79,7 @@ public class FbConnectHelper {
 
                     @Override
                     public void onCancel() {
-                        fbSignInListener.OnFbError("User cancelled.");
+                        fbSignInListener.OnFbSignInComplete(null, "User cancelled.");
                     }
 
                     @Override
@@ -91,7 +89,7 @@ public class FbConnectHelper {
                                 LoginManager.getInstance().logOut();
                             }
                         }
-                        fbSignInListener.OnFbError(exception.getMessage());
+                        fbSignInListener.OnFbSignInComplete(null, exception.getMessage());
                     }
                 });
 
@@ -103,7 +101,7 @@ public class FbConnectHelper {
                 new GraphRequest.GraphJSONObjectCallback() {
                     @Override
                     public void onCompleted(JSONObject object, GraphResponse response) {
-                        fbSignInListener.OnFbSuccess(response);
+                        fbSignInListener.OnFbSignInComplete(response,null);
                     }
                 });
         Bundle parameters = new Bundle();
@@ -113,6 +111,18 @@ public class FbConnectHelper {
         request.executeAsync();
     }
 
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (callbackManager != null)
+            callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    /**
+     * To share the details in facebook wall.
+     *
+     * @param title       of the content
+     * @param description of the content
+     * @param url         link to share.
+     */
     public void shareOnFBWall(String title, String description, String url) {
         if (ShareDialog.canShow(ShareLinkContent.class)) {
             ShareLinkContent linkContent = new ShareLinkContent.Builder()
@@ -124,8 +134,5 @@ public class FbConnectHelper {
         }
     }
 
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (callbackManager != null)
-            callbackManager.onActivityResult(requestCode, resultCode, data);
-    }
+
 }

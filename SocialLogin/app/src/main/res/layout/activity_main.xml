@@ -46,7 +46,7 @@
         android:gravity="center"
         android:text="@string/share_fb"
         android:textColor="@android:color/white"
-        android:textSize="16sp"  />
+        android:textSize="16sp" />
 
     <Button
         android:id="@+id/main_g_sign_in_button"
@@ -75,6 +75,37 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/main_g_name_txt"
+        android:layout_margin="10dp"
+        android:textColor="@color/color_accent"
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/main_twitter_sign_in_button"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/main_g_sign_in_button"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp"
+        android:background="@drawable/bg_btn_twitter"
+        android:gravity="center"
+        android:text="@string/sign_in_with_twitter"
+        android:textColor="@android:color/white"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/main_twitter_name_txt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/main_twitter_sign_in_button"
+        android:layout_margin="10dp"
+        android:textColor="@color/color_accent"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/main_twitter_email_txt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/main_twitter_name_txt"
         android:layout_margin="10dp"
         android:textColor="@color/color_accent"
         android:textSize="16sp" />
