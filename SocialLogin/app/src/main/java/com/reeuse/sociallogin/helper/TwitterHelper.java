@@ -6,13 +6,13 @@ import android.content.Intent;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
-import com.twitter.sdk.android.core.TwitterApiClient;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterAuthToken;
-import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
+import com.twitter.sdk.android.core.models.Tweet;
+import com.twitter.sdk.android.core.services.StatusesService;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -21,8 +21,8 @@ import io.fabric.sdk.android.Fabric;
  */
 public class TwitterHelper {
     // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
-    private static final String TWITTER_KEY = "3MBGCX634TmyzeNFS5kMnxxxx";
-    private static final String TWITTER_SECRET = "AUqvdi6sYbwth6p8nVpL14jMTMYgP2LOfhrzPCuueRnuxgxxxx";
+    private static final String TWITTER_KEY = "3MBGCX634TmyzeNFS5kMn7GIS";
+    private static final String TWITTER_SECRET = "AUqvdi6sYbwth6p8nVpL14jMTMYgP2LOfhrzPCuueRnuxgM7uU";
     private UserDetails userDetails = new UserDetails();
     /**
      * To get Email Address need to submit a request in the below link
@@ -34,14 +34,14 @@ public class TwitterHelper {
     private TwitterAuthConfig mTwitterAuthConfig;
     private TwitterSession mTwitterSession;
     private TwitterAuthToken mTwitterAuthToken;
-    private TwitterApiClient mTwitterApiClient;
-
 
     /**
      * Interface to listen the Twitter fabric login
      */
     public interface OnTwitterSignInListener {
         void OnTwitterSignInComplete(UserDetails userDetails, String error);
+
+        void OnTweetPostComplete(Result<Tweet> result, String error);
     }
 
 
@@ -58,7 +58,6 @@ public class TwitterHelper {
             @Override
             public void success(Result<TwitterSession> result) {
                 mTwitterSession = Twitter.getSessionManager().getActiveSession();
-                mTwitterApiClient = TwitterCore.getInstance().getApiClient();
                 mTwitterAuthToken = mTwitterSession.getAuthToken();
                 userDetails.setSecret(mTwitterAuthToken.token);
                 userDetails.setToken(mTwitterAuthToken.secret);
@@ -95,7 +94,35 @@ public class TwitterHelper {
             mTwitterAuthClient.onActivityResult(requestCode, resultCode, data);
     }
 
+    /**
+     * To post the tweet in background.
+     * @param status
+     * @param replyStatusId
+     * @param isSensitive
+     * @param latitude
+     * @param longitude
+     * @param placeId
+     * @param isShowcooridnates
+     * @param isTrimUser
+     * @param mediaId
+     */
+    public void postTweet(String status, Long replyStatusId, Boolean isSensitive, Double latitude, Double longitude, String placeId, Boolean isShowcooridnates, Boolean isTrimUser, String mediaId) {
+        StatusesService statusesService = Twitter.getApiClient(mTwitterSession).getStatusesService();
+        statusesService.update(status, replyStatusId, isSensitive, latitude, longitude, placeId, isShowcooridnates, isTrimUser, mediaId, new Callback<Tweet>() {
+            @Override
+            public void success(Result<Tweet> result) {
+                mOnTwitterSignInListener.OnTweetPostComplete(result, null);
+            }
 
+            public void failure(TwitterException exception) {
+                mOnTwitterSignInListener.OnTweetPostComplete(null, exception.getMessage());
+            }
+        });
+    }
+
+    /**
+     * UserDetails model class to hold the response values.
+     */
     public class UserDetails {
 
         private String userName;

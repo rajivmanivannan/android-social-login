@@ -3,7 +3,6 @@ package com.reeuse.sociallogin;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -17,6 +16,8 @@ import com.reeuse.sociallogin.helper.FacebookHelper;
 import com.reeuse.sociallogin.helper.GooglePlusHelper;
 import com.reeuse.sociallogin.helper.TwitterHelper;
 import com.reeuse.sociallogin.utils.KeyHashGenerator;
+import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.models.Tweet;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -140,23 +141,30 @@ public class MainActivity extends AppCompatActivity implements FacebookHelper.On
     @Override
     public void OnTwitterSignInComplete(TwitterHelper.UserDetails userDetails, String error) {
         progressBar.setVisibility(View.GONE);
-        if (userDetails != null)
+        if (userDetails != null) {
             twitterName.setText(userDetails.getUserName());
-        if (userDetails.getUserEmail() != null)
-            twitterEmail.setText(userDetails.getUserEmail());
+            if (userDetails.getUserEmail() != null)
+                twitterEmail.setText(userDetails.getUserEmail());
+        }
+        mTwitterHelper.postTweet(PLUS_ONE_URL, null, false, null, null, null, false, false, null);
     }
+
+    @Override
+    public void OnTweetPostComplete(Result<Tweet> result, String error) {
+
+    }
+
 
     @Override
     public void OnFbSignInComplete(GraphResponse graphResponse, String error) {
         progressBar.setVisibility(View.GONE);
-        if (error != null) {
+        if (error == null) {
             try {
                 JSONObject jsonObject = graphResponse.getJSONObject();
                 fbName.setText(jsonObject.getString("name"));
                 fbEmail.setText(jsonObject.getString("email"));
                 String id = jsonObject.getString("id");
                 String profileImg = "http://graph.facebook.com/" + id + "/picture?type=large";
-                Log.i(TAG, profileImg);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

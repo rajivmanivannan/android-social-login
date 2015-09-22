@@ -38,13 +38,13 @@
         <!-- For Facebook Share -->
         <provider
             android:name="com.facebook.FacebookContentProvider"
-            android:authorities="com.facebook.app.FacebookContentProvider596028327096xxxx"
+            android:authorities="com.facebook.app.FacebookContentProvider596028327096505"
             android:exported="true" />
         <!-- For Twitter Sign in-->
 
         <!--For Twitter Fabric SDK-->
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="9952b4224ffea1b363591a8a4e77b91fdeb1xxxx" />
+            android:value="9952b4224ffea1b363591a8a4e77b91fdeb18259" />
     </application>
 </manifest>
