@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-
 /* For Twitter Fabric SDK */
 apply plugin: 'io.fabric'
 buildscript {
@@ -47,7 +46,8 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.android.support:support-v4:23.0.1'
     /*For Google Plus Sign in */
-    compile 'com.google.android.gms:play-services:7.8.0'
+    compile 'com.google.android.gms:play-services-identity:8.1.0'
+    compile 'com.google.android.gms:play-services-plus:8.1.0'
     /*For Facebook Sign in*/
     compile 'com.facebook.android:facebook-android-sdk:4.0.1'
     /* For twitter login*/

@@ -21,8 +21,8 @@ import io.fabric.sdk.android.Fabric;
  */
 public class TwitterHelper {
     // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
-    private static final String TWITTER_KEY = "3MBGCX634TmyzeNFS5kMn7GIS";
-    private static final String TWITTER_SECRET = "AUqvdi6sYbwth6p8nVpL14jMTMYgP2LOfhrzPCuueRnuxgM7uU";
+    private static final String TWITTER_KEY = "VvRTZpDuWbFqjyytFKW4AJpHz";
+    private static final String TWITTER_SECRET = "HSdMJuQ6sIMCvlLVHVggfmYqDj9dyp7qEeM32wSsLKH3QHoWtb";
     private UserDetails userDetails = new UserDetails();
     /**
      * To get Email Address need to submit a request in the below link

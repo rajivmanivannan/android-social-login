@@ -16,14 +16,19 @@ import com.reeuse.sociallogin.helper.FacebookHelper;
 import com.reeuse.sociallogin.helper.GooglePlusHelper;
 import com.reeuse.sociallogin.helper.TwitterHelper;
 import com.reeuse.sociallogin.utils.KeyHashGenerator;
+import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.models.Tweet;
 
+import io.fabric.sdk.android.Fabric;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 
 public class MainActivity extends AppCompatActivity implements FacebookHelper.OnFbSignInListener, GooglePlusHelper.OnGoogleSignInListener, TwitterHelper.OnTwitterSignInListener {
+
+
     private static final String TAG = MainActivity.class.getSimpleName();
     //--------------------------------Facebook login--------------------------------------//
     private FacebookHelper fbConnectHelper;

@@ -4,6 +4,8 @@
 
     <!-- To access Google+ APIs: -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- For Google+ Get G-mail address -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
 
     <application
         android:allowBackup="true"
@@ -40,8 +42,6 @@
             android:name="com.facebook.FacebookContentProvider"
             android:authorities="com.facebook.app.FacebookContentProvider596028327096505"
             android:exported="true" />
-        <!-- For Twitter Sign in-->
-
         <!--For Twitter Fabric SDK-->
         <meta-data
             android:name="io.fabric.ApiKey"
