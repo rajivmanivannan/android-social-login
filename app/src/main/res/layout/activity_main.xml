@@ -1,0 +1,98 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+
+    <Button
+        android:id="@+id/fb_sign_in_button"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp"
+        android:background="@drawable/bg_btn_facebook"
+        android:gravity="center"
+        android:text="@string/sign_in_with_fb"
+        android:textColor="@android:color/white"
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/main_fb_share_button"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/fb_sign_in_button"
+        android:layout_margin="10dp"
+        android:background="@drawable/bg_btn_facebook"
+        android:gravity="center"
+        android:text="@string/share_fb"
+        android:textColor="@android:color/white"
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/main_g_sign_in_button"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/main_fb_share_button"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp"
+        android:background="@drawable/bg_btn_google_plus"
+        android:gravity="center"
+        android:text="@string/sign_in_with_google"
+        android:textColor="@android:color/white"
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/main_twitter_sign_in_button"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/main_g_sign_in_button"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp"
+        android:background="@drawable/bg_btn_twitter"
+        android:gravity="center"
+        android:text="@string/sign_in_with_twitter"
+        android:textColor="@android:color/white"
+        android:textSize="16sp" />
+
+
+    <Button
+        android:id="@+id/main_linked_in_sign_in_button"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/main_twitter_sign_in_button"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp"
+        android:background="@drawable/bg_btn_linked_in"
+        android:gravity="center"
+        android:text="@string/sign_in_with_linked_in"
+        android:textColor="@android:color/white"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/main_name_txt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/main_twitter_sign_in_button"
+        android:layout_margin="10dp"
+        android:textColor="@color/color_accent"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/main_email_txt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/main_name_txt"
+        android:layout_margin="10dp"
+        android:textColor="@color/color_accent"
+        android:textSize="16sp" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="gone" />
+</RelativeLayout>
