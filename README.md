@@ -1,10 +1,10 @@
-# Android-Social-Login
-Exploring: Social login implementation <br> <br>
+# Android-Social-Login  
 
-## Included Social Login
+Android Social Login includes helper class implementation for popular Social Networks.
 
-1. Facebook
-2. Google SignIn
-3. Twitter
-4. LinkedIn
+## Included Social Networks  
 
+1.Facebook
+2.Twitter
+3.Google
+4.LinkedIn
